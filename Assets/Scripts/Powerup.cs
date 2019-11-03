@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Powerup : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 4.0f;
+    private float _speed = 3.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -27,8 +27,7 @@ public class Enemy : MonoBehaviour
 
         if (transform.position.y <= -6.5f)
         {
-            float randomX = Random.Range(-10f, 10f);
-            transform.position = new Vector3(randomX, 8.0f, 0);
+            Destroy(this.gameObject);
         }
     }
 
@@ -36,12 +35,8 @@ public class Enemy : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            other.GetComponent<Player>()?.Damage();
+            other.GetComponent<Player>()?.TripleShotActive();
+            Destroy(this.gameObject);
         }
-        else if (other.tag == "Laser")
-        {
-            Destroy(other.gameObject);
-        }
-        Destroy(this.gameObject);
     }
 }
