@@ -50,6 +50,9 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.tag != "Player" && other.tag != "Laser")
+            return;
+
         _collider.enabled = false;
         _anim.SetTrigger("OnEnemyDeath");
         if (other.tag == "Player")
