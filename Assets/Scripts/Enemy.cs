@@ -8,10 +8,25 @@ public class Enemy : MonoBehaviour
     private float _speed = 4.0f;
 
     private Player _player;
+
+    private Animator _anim;
+
+    private BoxCollider2D _collider;
+
     // Start is called before the first frame update
     void Start()
     {
         _player = GameObject.Find("Player")?.GetComponent<Player>();
+        if (_player == null)
+            Debug.LogError("Player is null");
+
+        _anim = this.GetComponent<Animator>();
+        if (_anim == null)
+            Debug.LogError("Animator is null");
+
+        _collider = this.GetComponent<BoxCollider2D>();
+        if (_collider == null)
+            Debug.LogError("Collider is null");
     }
 
     // Update is called once per frame
@@ -35,16 +50,18 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        _collider.enabled = false;
+        _anim.SetTrigger("OnEnemyDeath");
         if (other.tag == "Player")
         {
             other.GetComponent<Player>()?.Damage();
-            Destroy(this.gameObject);
         }
         else if (other.tag == "Laser")
         {
             Destroy(other.gameObject);
             _player?.AddScore(10);
-            Destroy(this.gameObject);
-        }   
+        }
+        _speed = 0;
+        Destroy(this.gameObject, 2.8f);
     }
 }
