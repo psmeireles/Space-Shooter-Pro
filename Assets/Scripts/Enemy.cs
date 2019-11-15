@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour
 
     private BoxCollider2D _collider;
 
+    private AudioSource _audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +29,12 @@ public class Enemy : MonoBehaviour
         _collider = this.GetComponent<BoxCollider2D>();
         if (_collider == null)
             Debug.LogError("Collider is null");
+
+        _audioSource = this.GetComponent<AudioSource>();
+        if (_audioSource == null)
+        {
+            Debug.LogError("AudioSource on Enemy is null");
+        }
     }
 
     // Update is called once per frame
@@ -66,5 +74,6 @@ public class Enemy : MonoBehaviour
         }
         _speed = 0;
         Destroy(this.gameObject, 2.8f);
+        _audioSource.Play();
     }
 }

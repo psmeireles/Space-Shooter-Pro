@@ -44,6 +44,12 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _rightEngine, _leftEngine;
 
+    private AudioSource _audioSource;
+
+    [SerializeField]
+    private AudioClip _laserSound;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,6 +63,16 @@ public class Player : MonoBehaviour
         _uiManager = GameObject.Find("Canvas")?.GetComponent<UIManager>();
         if (_spawnManager == null)
             Debug.LogError("UIManager is null");
+
+        _audioSource = this.GetComponent<AudioSource>();
+        if (_audioSource == null)
+        {
+            Debug.LogError("AudioSource on Player is null");
+        }
+        else
+        {
+            _audioSource.clip = _laserSound;
+        }
     }
 
     // Update is called once per frame
@@ -67,6 +83,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
             FireLaser();
+            _audioSource.Play();
         }
     }
 
@@ -144,7 +161,7 @@ public class Player : MonoBehaviour
         }
         if (_lives < 1)
         {
-            _spawnManager?.OnPlayerDeath();
+            _spawnManager?.OnPlayerDeath(transform.position);
             Destroy(this.gameObject);
         }
     }

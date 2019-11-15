@@ -18,6 +18,9 @@ public class SpawnManager : MonoBehaviour
 
     private bool _stopSpawning = false;
 
+    [SerializeField]
+    private GameObject _explosionPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -60,8 +63,9 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    public void OnPlayerDeath()
+    public void OnPlayerDeath(Vector3 playerPosition)
     {
         _stopSpawning = true;
+        Instantiate(_explosionPrefab, playerPosition, Quaternion.identity);
     }
 }
